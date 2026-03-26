@@ -1,0 +1,35 @@
+{
+  "name": "Phemex",
+  "short_name": "Phemex",
+  "description": "专业加密货币交易平台",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#00d4aa",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "zh-Hant",
+  "icons": [
+    {
+      "src": "/phemex-logo.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "/phemex-logo.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "/phemex-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/phemex-logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

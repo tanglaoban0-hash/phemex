@@ -1,0 +1,562 @@
+/* 移动端响应式布局 */
+
+/* 基础移动端适配 */
+@media screen and (max-width: 768px) {
+  /* ========== 个人中心页面单列布局 ========== */
+  .profile-page .el-row {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .profile-page .el-col {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+  }
+
+  .profile-page {
+    padding: 12px !important;
+  }
+
+  .profile-page h2 {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  .profile-card,
+  .password-card,
+  .invite-card,
+  .security-card {
+    margin-bottom: 16px !important;
+  }
+
+  /* ========== 期权交易页面单列布局 ========== */
+  .option-trading-page .trading-container {
+    flex-direction: column !important;
+  }
+
+  .option-trading-page .chart-section {
+    width: 100% !important;
+    order: 1;
+  }
+
+  .option-trading-page .trading-panel {
+    width: 100% !important;
+    order: 2;
+    box-sizing: border-box;
+  }
+
+  .option-trading-page .chart {
+    height: 250px !important;
+  }
+
+  .option-trading-page .contract-types {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+  }
+
+  .option-trading-page .contract-item {
+    min-width: 80px;
+    flex-shrink: 0;
+  }
+
+  .option-trading-page .history-section {
+    overflow-x: auto;
+  }
+
+  .option-trading-page .history-section .el-table {
+    min-width: 700px;
+  }
+
+  /* ========== 资产页面修复 ========== */
+  .assets-page .balances-card .el-table {
+    min-width: 600px;
+  }
+
+  .assets-page .balances-card {
+    overflow-x: auto;
+  }
+
+  .assets-page .total-value .value {
+    font-size: 24px !important;
+  }
+
+  .assets-page .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  /* 修复表格文字显示 */
+  .assets-page .el-table {
+    font-size: 12px;
+  }
+
+  .assets-page .el-table .cell {
+    white-space: nowrap;
+  }
+  /* 整体布局调整 */
+  .main-layout {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    padding-bottom: 60px;
+  }
+
+  /* 头部导航适配 */
+  .header {
+    padding: 0 12px;
+    height: 56px;
+  }
+
+  .logo-text {
+    font-size: 18px;
+  }
+
+  .logo-pro {
+    font-size: 10px;
+    padding: 1px 4px;
+  }
+
+  /* 隐藏桌面端导航 */
+  .desktop-nav {
+    display: none !important;
+  }
+
+  /* 导航菜单改为底部固定 */
+  .nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #161b22;
+    border-top: 1px solid #30363d;
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 0;
+    gap: 0;
+    z-index: 1000;
+  }
+
+  .nav-item {
+    flex-direction: column;
+    gap: 4px;
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+
+  .nav-item .el-icon {
+    font-size: 20px;
+  }
+
+  .nav-item span {
+    font-size: 10px;
+  }
+
+  /* 主内容区域调整 */
+  .main-content {
+    padding-top: 56px;
+    padding-bottom: 70px;
+  }
+
+  /* 交易页面适配 */
+  .trade-page {
+    padding: 8px;
+    height: auto;
+    overflow-y: auto;
+  }
+
+  .trade-container {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* 市场列表改为横向滚动 */
+  .market-list {
+    width: 100%;
+    max-height: 200px;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .pairs-list {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    padding: 8px;
+    overflow-x: auto;
+  }
+
+  .pair-item {
+    min-width: 140px;
+    flex-shrink: 0;
+  }
+
+  /* 交易主区域改为单列 */
+  .trade-main {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px;
+    grid-template-columns: none !important;
+    grid-template-rows: none !important;
+  }
+
+  .chart-area {
+    height: 300px;
+    min-height: 250px;
+  }
+
+  /* 订单簿改为横向 */
+  .order-book {
+    display: flex;
+    flex-direction: row;
+    height: 200px;
+  }
+
+  .asks, .bids {
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .current-price {
+    writing-mode: horizontal-tb;
+    text-orientation: mixed;
+  }
+
+  /* 交易表单全宽 */
+  .trade-form {
+    width: 100%;
+    order: 3;
+  }
+
+  /* 深度图区域适配 */
+  .depth-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    order: 2;
+  }
+
+  .depth-chart-wrapper {
+    width: 100%;
+    height: 180px;
+  }
+
+  /* 订单簿横向布局 */
+  .order-book {
+    display: flex;
+    flex-direction: row;
+    height: 160px;
+    width: 100%;
+  }
+
+  .asks, .bids {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .asks {
+    flex-direction: column-reverse;
+  }
+
+  .current-price {
+    writing-mode: horizontal-tb;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-orientation: mixed;
+    padding: 4px 8px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 60px;
+  }
+
+  /* K线图高度调整 */
+  .chart-container {
+    min-height: 250px;
+    height: 250px;
+  }
+
+  /* 交易对信息字体缩小 */
+  .pair-info .symbol {
+    font-size: 16px;
+  }
+
+  .pair-info .price {
+    font-size: 18px;
+  }
+
+  /* 订单面板改为底部 */
+  .orders-panel {
+    width: 100%;
+    max-height: 300px;
+  }
+
+  /* 成交记录改为横向滚动 */
+  .trades-section {
+    height: auto;
+    max-height: 200px;
+  }
+
+  .trades-list {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 12px;
+  }
+
+  .trade-row {
+    min-width: 200px;
+    flex-shrink: 0;
+    flex-direction: column;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 12px;
+  }
+
+  /* 手势滑动提示 */
+  .swipe-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    color: #8b949e;
+    font-size: 12px;
+    gap: 8px;
+  }
+
+  .swipe-hint::before,
+  .swipe-hint::after {
+    content: '←';
+    opacity: 0.5;
+  }
+
+  .swipe-hint::after {
+    content: '→';
+  }
+
+  /* 触摸优化 */
+  .touch-optimized {
+    touch-action: pan-y pinch-zoom;
+  }
+
+  /* 按钮增大点击区域 */
+  .el-button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* 输入框优化 */
+  .el-input__wrapper {
+    min-height: 44px;
+  }
+
+  /* 卡片间距调整 */
+  .el-card {
+    margin-bottom: 12px;
+  }
+
+  /* 表格横向滚动 */
+  .el-table {
+    overflow-x: auto;
+  }
+
+  .el-table__inner-wrapper {
+    min-width: 600px;
+  }
+
+  /* 资金页面适配 */
+  .fund-container {
+    flex-direction: column;
+  }
+
+  .asset-overview {
+    width: 100%;
+    max-height: 150px;
+  }
+
+  .coin-list {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .coin-item {
+    min-width: 120px;
+  }
+
+  /* 安全中心适配 */
+  .security-container {
+    padding: 12px;
+  }
+
+  .security-level {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .security-items {
+    gap: 12px;
+  }
+
+  /* KYC页面适配 */
+  .kyc-container {
+    padding: 12px;
+  }
+
+  .level-selection {
+    grid-template-columns: 1fr;
+  }
+
+  /* 登录注册页面适配 */
+  .login-page, .register-page {
+    padding: 20px;
+  }
+
+  .login-form, .register-form {
+    max-width: 100%;
+    padding: 24px;
+  }
+
+  /* 隐藏语言切换在底部导航 */
+  .language-switch {
+    display: none;
+  }
+
+  /* 用户菜单改为底部弹出 */
+  .header-actions .user {
+    position: static;
+  }
+
+  .header-actions .user .el-dropdown-menu {
+    position: fixed !important;
+    bottom: 70px !important;
+    top: auto !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+}
+
+/* 小屏手机额外优化 */
+@media screen and (max-width: 375px) {
+  .nav-item span {
+    font-size: 9px;
+  }
+
+  .pair-item {
+    min-width: 120px;
+    padding: 8px;
+  }
+
+  .chart-container {
+    min-height: 200px;
+  }
+}
+
+/* 平板适配 */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .trade-container {
+    flex-wrap: wrap;
+  }
+
+  .market-list {
+    width: 100%;
+    max-height: 150px;
+  }
+
+  .pairs-list {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .pair-item {
+    min-width: 150px;
+  }
+
+  .trade-main {
+    flex: 1;
+    min-width: 100%;
+  }
+
+  .orders-panel {
+    width: 100%;
+  }
+}
+
+/* 横屏手机优化 */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+  .chart-area {
+    height: 200px;
+  }
+
+  .trade-form {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+}
+
+/* iPhone X+ 刘海屏适配 */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .header {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .nav {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .main-content {
+    padding-top: calc(56px + env(safe-area-inset-top));
+    padding-bottom: calc(70px + env(safe-area-inset-bottom));
+  }
+}
+
+/* 手势滑动动画 */
+.swipe-enter-active,
+.swipe-leave-active {
+  transition: transform 0.3s ease;
+}
+
+.swipe-enter-from {
+  transform: translateX(100%);
+}
+
+.swipe-leave-to {
+  transform: translateX(-100%);
+}
+
+/* 触摸反馈 */
+@media (hover: none) {
+  .nav-item:active,
+  .coin-item:active,
+  .pair-item:active {
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
+
+  .el-button:active {
+    transform: scale(0.95);
+  }
+}
+
+/* 禁用双击缩放 */
+* {
+  touch-action: manipulation;
+}
+
+/* 平滑滚动 */
+html {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 隐藏滚动条但保持滚动 */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
