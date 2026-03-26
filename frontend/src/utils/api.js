@@ -4,10 +4,11 @@ import Cookies from 'js-cookie'
 
 // 根据环境自动判断API地址
 const getBaseURL = () => {
-  // 开发环境使用当前host
-  if (import.meta.env.DEV) {
-    return '/api'
+  // 生产环境使用环境变量
+  if (import.meta.env.PROD) {
+    return import.meta.env.VITE_API_BASE || 'https://phemex-backend.up.railway.app/api'
   }
+  // 开发环境使用当前host
   return '/api'
 }
 
