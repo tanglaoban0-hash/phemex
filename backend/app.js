@@ -158,12 +158,24 @@ app.post('/api/upload', (req, res) => {
 });
 
 // Chat 路由
+app.get('/api/chat/session', (req, res) => {
+  res.json({ code: 200, message: 'success', data: { id: 1, status: 0 } });
+});
+
+app.post('/api/chat/session', (req, res) => {
+  res.json({ code: 200, message: 'success', data: { id: Date.now() } });
+});
+
 app.get('/api/chat/sessions', (req, res) => {
   res.json({ code: 200, message: 'success', data: [] });
 });
 
 app.get('/api/chat/messages/:sessionId', (req, res) => {
   res.json({ code: 200, message: 'success', data: [] });
+});
+
+app.post('/api/chat/message', (req, res) => {
+  res.json({ code: 200, message: 'success', data: { id: Date.now() } });
 });
 
 // Admin 路由
