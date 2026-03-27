@@ -23,20 +23,19 @@ app.use(express.urlencoded({ extended: true }));
 
 // 根路由
 app.get('/', (req, res) => {
-  res.json({ code: 200, message: 'Phemex API OK', version: '1.0.3', time: new Date().toISOString() });
+  res.json({ code: 200, message: 'Phemex API OK', version: '1.0.4', time: new Date().toISOString() });
 });
 
-// 测试路由
+// ===== API 路由（在限流之前）=====
 app.get('/api/test', (req, res) => res.json({ code: 200, message: 'Test OK' }));
+
+// 内联注册路由
 app.post('/api/auth/register', (req, res) => {
-  res.json({ code: 200, message: 'Register endpoint works', body: req.body });
+  console.log('Register request:', req.body);
+  res.json({ code: 200, message: 'Register OK', data: req.body });
 });
 
-// 限流
-const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 1000 });
-app.use('/api/', limiter);
-
-// 路由
+// 加载完整路由
 try {
   app.use('/api/auth', require('./routes/auth'));
   console.log('✅ Auth routes loaded');
@@ -46,12 +45,16 @@ try {
 
 app.use('/api/market', require('./routes/market'));
 
+// 限流（放在路由之后）
+// const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 1000 });
+// app.use('/api/', limiter);
+
 // 404
 app.use((req, res) => res.status(404).json({ code: 404, message: 'Not found' }));
 
 const PORT = process.env.PORT || 3000;
 
-// 简化启动 - 不等待数据库
+// 简化启动
 httpServer.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
