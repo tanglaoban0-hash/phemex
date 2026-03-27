@@ -152,6 +152,54 @@ app.post('/api/admin/login', (req, res) => {
   });
 });
 
+// Upload 路由
+app.post('/api/upload', (req, res) => {
+  res.json({ code: 200, message: '上传成功', data: { url: '/uploads/demo.jpg' } });
+});
+
+// Chat 路由
+app.get('/api/chat/sessions', (req, res) => {
+  res.json({ code: 200, message: 'success', data: [] });
+});
+
+app.get('/api/chat/messages/:sessionId', (req, res) => {
+  res.json({ code: 200, message: 'success', data: [] });
+});
+
+// Admin 路由
+app.get('/api/admin/dashboard', (req, res) => {
+  res.json({
+    code: 200,
+    message: 'success',
+    data: {
+      total_users: 100,
+      total_orders: 500,
+      total_volume: 1000000
+    }
+  });
+});
+
+app.get('/api/admin/users', (req, res) => {
+  res.json({ code: 200, message: 'success', data: [] });
+});
+
+app.get('/api/admin/orders', (req, res) => {
+  res.json({ code: 200, message: 'success', data: [] });
+});
+
+app.get('/api/admin/deposits', (req, res) => {
+  res.json({ code: 200, message: 'success', data: [] });
+});
+
+app.get('/api/admin/withdrawals', (req, res) => {
+  res.json({ code: 200, message: 'success', data: [] });
+});
+
+// 处理 OPTIONS 预检请求
+app.options('*', (req, res) => {
+  res.status(200).end();
+});
+
 // 404
 app.use((req, res) => {
   res.status(404).json({ code: 404, message: 'Not found: ' + req.path });
