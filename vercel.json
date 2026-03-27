@@ -13,10 +13,10 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/$1"
+      "dest": "/index.html"
     }
   ],
   "env": {
-    "VITE_API_BASE": "https://phemex-backend.up.railway.app"
+    "VITE_API_BASE": "https://phemex-backend.onrender.com/api"
   }
 }
