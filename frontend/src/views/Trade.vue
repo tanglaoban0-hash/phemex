@@ -358,7 +358,7 @@ const selectPair = (pair) => {
 
 // 初始化WebSocket
 const initSocket = () => {
-  const wsUrl = import.meta.env.VITE_WS_URL || 'https://badge-sizes-currently-foster.trycloudflare.com'
+  const wsUrl = import.meta.env.VITE_WS_URL || 'https://spreading-calibration-bless-remind.trycloudflare.com'
   socket = io(wsUrl)
   
   socket.on('connect', () => {

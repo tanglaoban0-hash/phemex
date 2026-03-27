@@ -6,7 +6,7 @@ import Cookies from 'js-cookie'
 const getBaseURL = () => {
   // 生产环境使用环境变量
   if (import.meta.env.PROD) {
-    return import.meta.env.VITE_API_BASE || 'https://badge-sizes-currently-foster.trycloudflare.com/api'
+    return import.meta.env.VITE_API_BASE || 'https://spreading-calibration-bless-remind.trycloudflare.com/api'
   }
   // 开发环境使用当前host
   return '/api'
