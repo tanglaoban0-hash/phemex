@@ -1,14 +1,19 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
-
-// SQLite 数据库连接（临时使用，便于演示）
-const dbPath = path.join(__dirname, '../data/database.sqlite');
-
-// 确保数据目录存在
 const fs = require('fs');
-const dataDir = path.dirname(dbPath);
-if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true });
+
+// SQLite 数据库路径 - 使用 /tmp 目录确保容器环境可写
+const isRender = process.env.RENDER || process.env.PORT;
+const dbPath = isRender 
+  ? '/tmp/database.sqlite' 
+  : path.join(__dirname, '../data/database.sqlite');
+
+// 确保数据目录存在（非 Render 环境）
+if (!isRender) {
+  const dataDir = path.dirname(dbPath);
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+  }
 }
 
 const db = new sqlite3.Database(dbPath);
