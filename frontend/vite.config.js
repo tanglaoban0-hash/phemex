@@ -15,9 +15,8 @@ export default defineConfig({
     cors: true,
     proxy: {
       '/api': {
-        target: 'https://phemex-backend.onrender.com',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '/api')
+        target: 'http://localhost:3000',
+        changeOrigin: true
       }
     }
   },
