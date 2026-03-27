@@ -64,9 +64,21 @@ const authLimiter = rateLimit({
 app.use('/api/auth/login', authLimiter);
 app.use('/api/auth/register', authLimiter);
 
-// 路由
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/user', require('./routes/user'));
+// 路由 - 带错误捕获
+try {
+  app.use('/api/auth', require('./routes/auth'));
+  console.log('✅ Auth 路由加载成功');
+} catch (err) {
+  console.error('❌ Auth 路由加载失败:', err.message);
+}
+
+try {
+  app.use('/api/user', require('./routes/user'));
+  console.log('✅ User 路由加载成功');
+} catch (err) {
+  console.error('❌ User 路由加载失败:', err.message);
+}
+
 app.use('/api/market', require('./routes/market'));
 app.use('/api/trade', require('./routes/trade'));
 app.use('/api/asset', require('./routes/asset'));
