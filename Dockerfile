@@ -2,6 +2,9 @@ FROM node:18-alpine
 
 WORKDIR /app
 
+# Cache bust - force rebuild on every deploy
+ARG CACHE_BUST=1
+
 # Copy package files
 COPY backend/package*.json ./
 
