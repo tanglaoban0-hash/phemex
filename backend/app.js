@@ -25,7 +25,21 @@ global.io = io;
 
 // 中间件
 app.use(helmet());
-app.use(cors());
+
+// CORS 配置 - 允许前端域名
+const corsOptions = {
+  origin: [
+    'https://phemex-34ns5gohw-tanglaoban0-hashs-projects.vercel.app',
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://localhost:8080'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+};
+app.use(cors(corsOptions));
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
