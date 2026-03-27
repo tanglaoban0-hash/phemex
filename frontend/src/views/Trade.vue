@@ -358,7 +358,8 @@ const selectPair = (pair) => {
 
 // 初始化WebSocket
 const initSocket = () => {
-  socket = io('http://localhost:3000')
+  const wsUrl = import.meta.env.VITE_WS_URL || 'https://phemex-backend.onrender.com'
+  socket = io(wsUrl)
   
   socket.on('connect', () => {
     console.log('WebSocket已连接')
