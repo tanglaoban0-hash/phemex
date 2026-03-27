@@ -66,6 +66,16 @@ app.get('/api/market/ticker/:id', (req, res) => {
   });
 });
 
+app.get('/api/market/kline', (req, res) => {
+  res.json({
+    code: 200,
+    message: 'success',
+    data: [
+      { timestamp: Date.now(), open: 64000, high: 66000, low: 63000, close: 65000, volume: 1000 }
+    ]
+  });
+});
+
 // User 路由
 app.get('/api/user/info', (req, res) => {
   res.json({
@@ -95,6 +105,14 @@ app.get('/api/asset/balances', (req, res) => {
   });
 });
 
+app.get('/api/asset/total', (req, res) => {
+  res.json({
+    code: 200,
+    message: 'success',
+    data: { total_usdt: 50000, total_btc: 0.5, total_eth: 2 }
+  });
+});
+
 // Trade 路由
 app.get('/api/trade/orders', (req, res) => {
   res.json({ code: 200, message: 'success', data: [] });
@@ -111,6 +129,17 @@ app.get('/api/fund/deposits', (req, res) => {
 
 app.get('/api/fund/withdrawals', (req, res) => {
   res.json({ code: 200, message: 'success', data: [] });
+});
+
+app.get('/api/fund/methods', (req, res) => {
+  res.json({
+    code: 200,
+    message: 'success',
+    data: [
+      { id: 1, method: 'bank_card', name: '银行卡', status: 1 },
+      { id: 2, method: 'usdt', name: 'USDT', status: 1 }
+    ]
+  });
 });
 
 // Security 路由
@@ -153,6 +182,10 @@ app.get('/api/option/history', (req, res) => {
 
 app.post('/api/option/order', (req, res) => {
   res.json({ code: 200, message: '下单成功', data: { order_id: Date.now() } });
+});
+
+app.get('/api/option/active', (req, res) => {
+  res.json({ code: 200, message: 'success', data: [] });
 });
 
 // Admin 路由
