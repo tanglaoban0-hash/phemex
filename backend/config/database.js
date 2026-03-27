@@ -619,6 +619,30 @@ const migrateDatabase = async () => {
   }
 };
 
+// 内存缓存（用于验证码等临时数据）
+const cache = new Map();
+
+const getCache = async (key) => {
+  const item = cache.get(key);
+  if (!item) return null;
+  if (Date.now() > item.expireAt) {
+    cache.delete(key);
+    return null;
+  }
+  return item.value;
+};
+
+const setCache = async (key, value, ttlSeconds = 300) => {
+  cache.set(key, {
+    value,
+    expireAt: Date.now() + ttlSeconds * 1000
+  });
+};
+
+const delCache = async (key) => {
+  cache.delete(key);
+};
+
 module.exports = {
   db,
   query,
@@ -626,5 +650,8 @@ module.exports = {
   getOne,
   insert,
   update,
-  initDatabase
+  initDatabase,
+  getCache,
+  setCache,
+  delCache
 };
