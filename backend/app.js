@@ -28,7 +28,21 @@ app.post('/api/auth/register', (req, res) => {
 });
 
 app.post('/api/auth/login', (req, res) => {
-  res.json({ code: 200, message: '登录成功' });
+  const { email, password } = req.body;
+  // 简化版本 - 实际应该验证密码
+  res.json({ 
+    code: 200, 
+    message: '登录成功',
+    data: {
+      token: 'demo_token_' + Date.now(),
+      user: {
+        id: 1,
+        email: email,
+        username: email.split('@')[0],
+        status: 1
+      }
+    }
+  });
 });
 
 // Market 路由
