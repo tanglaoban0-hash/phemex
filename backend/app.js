@@ -37,6 +37,13 @@ const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 1000 });
 app.use('/api/', limiter);
 
 // 路由
+try {
+  app.use('/api/auth', require('./routes/auth'));
+  console.log('✅ Auth routes loaded');
+} catch (err) {
+  console.error('❌ Auth routes failed:', err.message);
+}
+
 app.use('/api/market', require('./routes/market'));
 
 // 404
