@@ -40,8 +40,8 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
   res.json({ 
     code: 200, 
-    message: 'Phemex Backend API 运行正常',
-    version: '1.0.0',
+    message: 'Phemex Backend API 运行正常 - 版本2',
+    version: '1.0.1',
     timestamp: new Date().toISOString()
   });
 });
