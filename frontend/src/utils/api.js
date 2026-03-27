@@ -6,7 +6,7 @@ import Cookies from 'js-cookie'
 const getBaseURL = () => {
   // 生产环境使用环境变量
   if (import.meta.env.PROD) {
-    return import.meta.env.VITE_API_BASE || 'https://phemex-backend.onrender.com/api'
+    return import.meta.env.VITE_API_BASE || 'https://phemex-production.up.railway.app/api'
   }
   // 开发环境使用当前host
   return '/api'

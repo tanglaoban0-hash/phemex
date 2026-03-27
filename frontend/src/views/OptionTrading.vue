@@ -338,7 +338,7 @@ const updateChartRealtime = (newData) => {
 
 // WebSocket连接
 const initSocket = () => {
-  const wsUrl = import.meta.env.VITE_WS_URL || 'https://phemex-backend.onrender.com'
+  const wsUrl = import.meta.env.VITE_WS_URL || 'https://phemex-production.up.railway.app'
   socket = io(wsUrl)
   
   socket.on('connect', () => {
