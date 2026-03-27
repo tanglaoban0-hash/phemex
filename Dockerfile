@@ -3,7 +3,7 @@ FROM node:18-alpine
 WORKDIR /app
 
 # Cache bust - force rebuild
-ARG CACHE_BUST=2
+ARG CACHE_BUST=3
 
 # Copy package files from backend
 COPY backend/package*.json ./
