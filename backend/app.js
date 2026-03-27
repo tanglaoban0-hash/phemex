@@ -18,7 +18,7 @@ app.use(express.json({ limit: '10mb' }));
 
 // ===== 所有路由 =====
 app.get('/', (req, res) => {
-  res.json({ code: 200, message: 'Phemex API v1.0.7', time: new Date().toISOString(), auth: 'enabled' });
+  res.json({ code: 200, message: 'Phemex API v1.0.8 - CLEAN BUILD', time: new Date().toISOString(), auth: true });
 });
 
 // 内联 auth 路由

@@ -1,0 +1,5 @@
+# 确保 Railway 不缓存这些目录
+node_modules/
+backend/node_modules/
+*.log
+.DS_Store

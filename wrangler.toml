@@ -1,0 +1,7 @@
+# Cloudflare Pages 部署配置
+name = "phemex-frontend"
+type = "static"
+[build]
+command = "cd frontend && npm install && npm run build"
+[site]
+bucket = "./frontend/dist"
