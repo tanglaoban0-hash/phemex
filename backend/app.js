@@ -26,19 +26,12 @@ global.io = io;
 // 中间件
 app.use(helmet());
 
-// CORS 配置 - 允许前端域名
-const corsOptions = {
-  origin: [
-    'https://phemex-34ns5gohw-tanglaoban0-hashs-projects.vercel.app',
-    'http://localhost:3000',
-    'http://localhost:5173',
-    'http://localhost:8080'
-  ],
+// CORS 配置 - 允许所有来源
+app.use(cors({
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
-};
-app.use(cors(corsOptions));
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
