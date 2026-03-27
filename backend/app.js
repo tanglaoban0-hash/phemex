@@ -1,281 +1,122 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
+const path = require('path');
+
+// 根据环境变量选择数据库
+const useMySQL = process.env.USE_MYSQL === 'true';
+const db = useMySQL ? require('./config/database-mysql') : require('./config/database');
 
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
-  cors: { origin: '*', methods: ['GET', 'POST'] }
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST']
+  }
 });
 
+// 全局存储 io 实例
 global.io = io;
 
 // 中间件
-app.use(cors({ origin: '*', methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'] }));
+app.use(helmet());
+app.use(cors());
 app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
 
-// ===== 所有路由 =====
-app.get('/', (req, res) => {
-  res.json({ code: 200, message: 'Phemex API v1.0.9 - FULL ROUTES', time: new Date().toISOString(), routes: 'all' });
+// 限流配置 - 开发环境放宽限制
+const isDev = process.env.NODE_ENV !== 'production';
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: isDev ? 10000 : 1000, // 开发环境10000，生产1000
+  message: { code: 429, message: '请求过于频繁，请稍后再试' }
 });
+app.use('/api/', limiter);
 
-// 内联 auth 路由
-app.post('/api/auth/register', (req, res) => {
-  console.log('REGISTER:', req.body);
-  res.json({ code: 200, message: '注册成功', data: req.body });
+// 更严格的登录/注册限流
+const authLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 10,
+  message: { code: 429, message: '登录尝试次数过多，请1小时后再试' }
 });
+app.use('/api/auth/login', authLimiter);
+app.use('/api/auth/register', authLimiter);
 
-app.post('/api/auth/login', (req, res) => {
-  const { email, password } = req.body;
-  // 简化版本 - 实际应该验证密码
-  res.json({ 
-    code: 200, 
-    message: '登录成功',
-    data: {
-      token: 'demo_token_' + Date.now(),
-      user: {
-        id: 1,
-        email: email,
-        username: email.split('@')[0],
-        status: 1
-      }
-    }
-  });
-});
+// 路由
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/user', require('./routes/user'));
+app.use('/api/market', require('./routes/market'));
+app.use('/api/trade', require('./routes/trade'));
+app.use('/api/asset', require('./routes/asset'));
+app.use('/api/option', require('./routes/option'));
+app.use('/api/fund', require('./routes/fund'));
+app.use('/api/kyc', require('./routes/kyc'));
+app.use('/api/security', require('./routes/security'));
+app.use('/api/chat', require('./routes/chat'));
+app.use('/api/upload', require('./routes/upload'));
+app.use('/api/admin/chat', require('./routes/admin/chat'));
+app.use('/api/admin', require('./routes/admin'));
+app.use('/api/admin/fund', require('./routes/admin/fund'));
+app.use('/api/admin/kyc', require('./routes/admin/kyc'));
 
-// Market 路由
-app.get('/api/market/pairs', async (req, res) => {
-  res.json({
-    code: 200,
-    message: 'success',
-    data: [
-      { id: 1, symbol: 'BTC/USDT', price: 65000, price_change_24h: 2.5, volume_24h: 1250 },
-      { id: 2, symbol: 'ETH/USDT', price: 3500, price_change_24h: 1.8, volume_24h: 8500 },
-      { id: 3, symbol: 'BNB/USDT', price: 580, price_change_24h: -0.5, volume_24h: 5000 }
-    ]
-  });
-});
-
-app.get('/api/market/ticker/:id', (req, res) => {
-  res.json({
-    code: 200,
-    message: 'success',
-    data: { price: 65000, change: 2.5 }
-  });
-});
-
-app.get('/api/market/kline', (req, res) => {
-  res.json({
-    code: 200,
-    message: 'success',
-    data: [
-      { timestamp: Date.now(), open: 64000, high: 66000, low: 63000, close: 65000, volume: 1000 }
-    ]
-  });
-});
-
-// User 路由
-app.get('/api/user/info', (req, res) => {
-  res.json({
-    code: 200,
-    message: 'success',
-    data: {
-      id: 1,
-      email: 'test@test.com',
-      username: 'test',
-      avatar: '',
-      status: 1,
-      kyc_status: 0
-    }
-  });
-});
-
-// Asset 路由
-app.get('/api/asset/balances', (req, res) => {
-  res.json({
-    code: 200,
-    message: 'success',
-    data: [
-      { coin_id: 1, symbol: 'USDT', available: 10000, frozen: 0 },
-      { coin_id: 2, symbol: 'BTC', available: 0.5, frozen: 0 },
-      { coin_id: 3, symbol: 'ETH', available: 2, frozen: 0 }
-    ]
-  });
-});
-
-app.get('/api/asset/total', (req, res) => {
-  res.json({
-    code: 200,
-    message: 'success',
-    data: { total_usdt: 50000, total_btc: 0.5, total_eth: 2 }
-  });
-});
-
-// Trade 路由
-app.get('/api/trade/orders', (req, res) => {
-  res.json({ code: 200, message: 'success', data: [] });
-});
-
-app.post('/api/trade/order', (req, res) => {
-  res.json({ code: 200, message: '下单成功', data: { order_id: Date.now() } });
-});
-
-// Fund 路由
-app.get('/api/fund/deposits', (req, res) => {
-  res.json({ code: 200, message: 'success', data: [] });
-});
-
-app.get('/api/fund/withdrawals', (req, res) => {
-  res.json({ code: 200, message: 'success', data: [] });
-});
-
-app.get('/api/fund/methods', (req, res) => {
-  res.json({
-    code: 200,
-    message: 'success',
-    data: [
-      { id: 1, method: 'bank_card', name: '银行卡', status: 1 },
-      { id: 2, method: 'usdt', name: 'USDT', status: 1 }
-    ]
-  });
-});
-
-// Security 路由
-app.get('/api/security/settings', (req, res) => {
-  res.json({
-    code: 200,
-    message: 'success',
-    data: { google_2fa: false, email_2fa: false }
-  });
-});
-
-// KYC 路由
-app.get('/api/kyc/status', (req, res) => {
-  res.json({
-    code: 200,
-    message: 'success',
-    data: { status: 0, level: 0 }
-  });
-});
-
-// Option 路由
-app.get('/api/option/contracts', (req, res) => {
-  res.json({
-    code: 200,
-    message: 'success',
-    data: [
-      { id: 1, name: '30秒', duration: 30, profit_rate: 0.75 },
-      { id: 2, name: '1分钟', duration: 60, profit_rate: 0.80 }
-    ]
-  });
-});
-
-app.get('/api/option/orders', (req, res) => {
-  res.json({ code: 200, message: 'success', data: [] });
-});
-
-app.get('/api/option/history', (req, res) => {
-  res.json({ code: 200, message: 'success', data: [] });
-});
-
-app.post('/api/option/order', (req, res) => {
-  res.json({ code: 200, message: '下单成功', data: { order_id: Date.now() } });
-});
-
-app.get('/api/option/active', (req, res) => {
-  res.json({ code: 200, message: 'success', data: [] });
-});
-
-// Admin 路由
-app.post('/api/admin/login', (req, res) => {
-  res.json({
-    code: 200,
-    message: '登录成功',
-    data: { token: 'admin_token_' + Date.now() }
-  });
-});
-
-// Upload 路由
-app.post('/api/upload', (req, res) => {
-  res.json({ code: 200, message: '上传成功', data: { url: '/uploads/demo.jpg' } });
-});
-
-// Chat 路由
-app.get('/api/chat/session', (req, res) => {
-  res.json({ code: 200, message: 'success', data: { id: 1, status: 0 } });
-});
-
-app.post('/api/chat/session', (req, res) => {
-  res.json({ code: 200, message: 'success', data: { id: Date.now() } });
-});
-
-app.get('/api/chat/sessions', (req, res) => {
-  res.json({ code: 200, message: 'success', data: [] });
-});
-
-app.get('/api/chat/messages/:sessionId', (req, res) => {
-  res.json({ code: 200, message: 'success', data: [] });
-});
-
-app.post('/api/chat/message', (req, res) => {
-  res.json({ code: 200, message: 'success', data: { id: Date.now() } });
-});
-
-app.get('/api/chat/unread', (req, res) => {
-  res.json({ code: 200, message: 'success', data: { count: 0 } });
-});
-
-// Admin 路由
-app.get('/api/admin/dashboard', (req, res) => {
-  res.json({
-    code: 200,
-    message: 'success',
-    data: {
-      total_users: 100,
-      total_orders: 500,
-      total_volume: 1000000
-    }
-  });
-});
-
-app.get('/api/admin/users', (req, res) => {
-  res.json({ code: 200, message: 'success', data: [] });
-});
-
-app.get('/api/admin/orders', (req, res) => {
-  res.json({ code: 200, message: 'success', data: [] });
-});
-
-app.get('/api/admin/deposits', (req, res) => {
-  res.json({ code: 200, message: 'success', data: [] });
-});
-
-app.get('/api/admin/withdrawals', (req, res) => {
-  res.json({ code: 200, message: 'success', data: [] });
-});
-
-// 处理 OPTIONS 预检请求
-app.options('*', (req, res) => {
-  res.status(200).end();
-});
-
-// 请求日志（用于调试404）
-app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+// 静态文件 - 添加CORS头和缓存控制
+app.use('/uploads', (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Cache-Control', 'no-cache');
   next();
+}, express.static(path.join(__dirname, 'uploads')));
+
+// Socket.io 连接处理
+require('./socket')(io);
+
+// 错误处理中间件
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    code: 500,
+    message: process.env.NODE_ENV === 'production' ? '服务器内部错误' : err.message
+  });
 });
 
-// 404
+// 404 处理
 app.use((req, res) => {
-  res.status(404).json({ code: 404, message: 'Not found: ' + req.path });
+  res.status(404).json({ code: 404, message: '接口不存在' });
 });
 
 const PORT = process.env.PORT || 3000;
 
-httpServer.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Server v1.0.6 on port ${PORT}`);
+// 初始化数据库并启动服务器
+db.initDatabase().then(async () => {
+  console.log(`📊 使用数据库: ${useMySQL ? 'MySQL + Redis' : 'SQLite'}`);
+  
+  // 如果使用MySQL，启动Binance真实行情
+  if (useMySQL) {
+    const binanceMarket = require('./services/binanceMarket');
+    await binanceMarket.start();
+    console.log('📈 Binance真实行情服务已启动');
+  } else {
+    // 使用模拟行情
+    const marketSimulator = require('./services/marketSimulator');
+    marketSimulator.start();
+  }
+
+  // 启动撮合引擎
+  const matchEngine = require('./services/matchEngine');
+  matchEngine.start();
+
+  httpServer.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+  });
+}).catch(err => {
+  console.error('数据库初始化失败:', err);
+  process.exit(1);
 });
 
 module.exports = { app, io };
