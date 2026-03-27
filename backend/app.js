@@ -23,7 +23,13 @@ app.use(express.urlencoded({ extended: true }));
 
 // 根路由
 app.get('/', (req, res) => {
-  res.json({ code: 200, message: 'Phemex API OK', version: '1.0.4', time: new Date().toISOString() });
+  res.json({ 
+    code: 200, 
+    message: 'Phemex API OK', 
+    version: '1.0.5', 
+    time: new Date().toISOString(),
+    authLoaded: true 
+  });
 });
 
 // ===== API 路由（在限流之前）=====
