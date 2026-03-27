@@ -143,6 +143,18 @@ app.get('/api/option/contracts', (req, res) => {
   });
 });
 
+app.get('/api/option/orders', (req, res) => {
+  res.json({ code: 200, message: 'success', data: [] });
+});
+
+app.get('/api/option/history', (req, res) => {
+  res.json({ code: 200, message: 'success', data: [] });
+});
+
+app.post('/api/option/order', (req, res) => {
+  res.json({ code: 200, message: '下单成功', data: { order_id: Date.now() } });
+});
+
 // Admin 路由
 app.post('/api/admin/login', (req, res) => {
   res.json({
