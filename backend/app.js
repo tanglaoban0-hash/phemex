@@ -51,9 +51,104 @@ app.get('/api/market/pairs', async (req, res) => {
     code: 200,
     message: 'success',
     data: [
-      { id: 1, symbol: 'BTC/USDT', price: 65000 },
-      { id: 2, symbol: 'ETH/USDT', price: 3500 }
+      { id: 1, symbol: 'BTC/USDT', price: 65000, price_change_24h: 2.5, volume_24h: 1250 },
+      { id: 2, symbol: 'ETH/USDT', price: 3500, price_change_24h: 1.8, volume_24h: 8500 },
+      { id: 3, symbol: 'BNB/USDT', price: 580, price_change_24h: -0.5, volume_24h: 5000 }
     ]
+  });
+});
+
+app.get('/api/market/ticker/:id', (req, res) => {
+  res.json({
+    code: 200,
+    message: 'success',
+    data: { price: 65000, change: 2.5 }
+  });
+});
+
+// User 路由
+app.get('/api/user/info', (req, res) => {
+  res.json({
+    code: 200,
+    message: 'success',
+    data: {
+      id: 1,
+      email: 'test@test.com',
+      username: 'test',
+      avatar: '',
+      status: 1,
+      kyc_status: 0
+    }
+  });
+});
+
+// Asset 路由
+app.get('/api/asset/balances', (req, res) => {
+  res.json({
+    code: 200,
+    message: 'success',
+    data: [
+      { coin_id: 1, symbol: 'USDT', available: 10000, frozen: 0 },
+      { coin_id: 2, symbol: 'BTC', available: 0.5, frozen: 0 },
+      { coin_id: 3, symbol: 'ETH', available: 2, frozen: 0 }
+    ]
+  });
+});
+
+// Trade 路由
+app.get('/api/trade/orders', (req, res) => {
+  res.json({ code: 200, message: 'success', data: [] });
+});
+
+app.post('/api/trade/order', (req, res) => {
+  res.json({ code: 200, message: '下单成功', data: { order_id: Date.now() } });
+});
+
+// Fund 路由
+app.get('/api/fund/deposits', (req, res) => {
+  res.json({ code: 200, message: 'success', data: [] });
+});
+
+app.get('/api/fund/withdrawals', (req, res) => {
+  res.json({ code: 200, message: 'success', data: [] });
+});
+
+// Security 路由
+app.get('/api/security/settings', (req, res) => {
+  res.json({
+    code: 200,
+    message: 'success',
+    data: { google_2fa: false, email_2fa: false }
+  });
+});
+
+// KYC 路由
+app.get('/api/kyc/status', (req, res) => {
+  res.json({
+    code: 200,
+    message: 'success',
+    data: { status: 0, level: 0 }
+  });
+});
+
+// Option 路由
+app.get('/api/option/contracts', (req, res) => {
+  res.json({
+    code: 200,
+    message: 'success',
+    data: [
+      { id: 1, name: '30秒', duration: 30, profit_rate: 0.75 },
+      { id: 2, name: '1分钟', duration: 60, profit_rate: 0.80 }
+    ]
+  });
+});
+
+// Admin 路由
+app.post('/api/admin/login', (req, res) => {
+  res.json({
+    code: 200,
+    message: '登录成功',
+    data: { token: 'admin_token_' + Date.now() }
   });
 });
 
