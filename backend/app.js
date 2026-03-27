@@ -29,6 +29,16 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
+// 根路由 - 健康检查
+app.get('/', (req, res) => {
+  res.json({ 
+    code: 200, 
+    message: 'Phemex Backend API 运行正常',
+    version: '1.0.0',
+    timestamp: new Date().toISOString()
+  });
+});
+
 // 限流配置 - 开发环境放宽限制
 const isDev = process.env.NODE_ENV !== 'production';
 const limiter = rateLimit({
