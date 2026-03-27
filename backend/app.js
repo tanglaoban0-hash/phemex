@@ -46,6 +46,11 @@ app.get('/', (req, res) => {
   });
 });
 
+// 测试路由 - 直接内联
+app.post('/api/test/register', (req, res) => {
+  res.json({ code: 200, message: '测试注册接口正常工作', data: req.body });
+});
+
 // 限流配置 - 开发环境放宽限制
 const isDev = process.env.NODE_ENV !== 'production';
 const limiter = rateLimit({
