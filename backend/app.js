@@ -178,6 +178,10 @@ app.post('/api/chat/message', (req, res) => {
   res.json({ code: 200, message: 'success', data: { id: Date.now() } });
 });
 
+app.get('/api/chat/unread', (req, res) => {
+  res.json({ code: 200, message: 'success', data: { count: 0 } });
+});
+
 // Admin 路由
 app.get('/api/admin/dashboard', (req, res) => {
   res.json({
@@ -210,6 +214,12 @@ app.get('/api/admin/withdrawals', (req, res) => {
 // 处理 OPTIONS 预检请求
 app.options('*', (req, res) => {
   res.status(200).end();
+});
+
+// 请求日志（用于调试404）
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+  next();
 });
 
 // 404
