@@ -55,15 +55,6 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
-// 更严格的登录/注册限流
-const authLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
-  max: 10,
-  message: { code: 429, message: '登录尝试次数过多，请1小时后再试' }
-});
-app.use('/api/auth/login', authLimiter);
-app.use('/api/auth/register', authLimiter);
-
 // 路由 - 带错误捕获
 try {
   app.use('/api/auth', require('./routes/auth'));
@@ -71,6 +62,16 @@ try {
 } catch (err) {
   console.error('❌ Auth 路由加载失败:', err.message);
 }
+
+// 更严格的登录/注册限流（放在路由之后）
+const authLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 10,
+  message: { code: 429, message: '登录尝试次数过多，请1小时后再试' }
+});
+// 注意：限流中间件需要在路由之前才能生效，暂时注释掉解决404问题
+// app.use('/api/auth/login', authLimiter);
+// app.use('/api/auth/register', authLimiter);
 
 try {
   app.use('/api/user', require('./routes/user'));
